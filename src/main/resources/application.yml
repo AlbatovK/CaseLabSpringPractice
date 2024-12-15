@@ -34,7 +34,7 @@ springdoc:
   api-docs:
     path: /api-docs
 
-  show-actuator: false
+  show-actuator: true
 
   swagger-ui:
     show-extensions: true
