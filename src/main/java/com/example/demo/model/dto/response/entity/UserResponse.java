@@ -1,5 +1,6 @@
 package com.example.demo.model.dto.response.entity;
 
+import com.example.demo.model.database.entity.Role;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,10 +12,13 @@ public class UserResponse extends EntityResponse {
     private final String lastName;
     private final String email;
 
-    public UserResponse(Integer id, LocalDateTime createdAt, String firstName, String lastName, String email) {
+    private final Role role;
+
+    public UserResponse(Integer id, LocalDateTime createdAt, String firstName, String lastName, String email, Role role) {
         super(id, createdAt);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.role = role;
     }
 }

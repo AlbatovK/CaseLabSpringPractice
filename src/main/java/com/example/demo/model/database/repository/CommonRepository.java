@@ -1,6 +1,6 @@
 package com.example.demo.model.database.repository;
 
-import com.example.demo.model.database.AbstractEntity;
+import com.example.demo.model.database.entity.AbstractEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

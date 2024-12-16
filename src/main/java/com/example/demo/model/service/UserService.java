@@ -1,6 +1,8 @@
 package com.example.demo.model.service;
 
+import com.example.demo.model.database.entity.User;
 import com.example.demo.model.dto.request.UserRequest;
+import com.example.demo.model.dto.response.exception.AlreadyExistsException;
 import com.example.demo.model.dto.response.exception.NotFoundException;
 import com.example.demo.model.dto.response.entity.UserResponse;
 import jakarta.validation.Valid;
@@ -14,11 +16,13 @@ public interface UserService {
 
     UserResponse getById(Integer id) throws NotFoundException;
 
-    UserResponse create(@Valid UserRequest request);
+    void create(User user) throws AlreadyExistsException;
 
     UserResponse update(Integer id, @Valid UserRequest request) throws NotFoundException;
 
     void delete(Integer id) throws NotFoundException;
+
+    void getAdmin() throws NotFoundException;
 
 
 }

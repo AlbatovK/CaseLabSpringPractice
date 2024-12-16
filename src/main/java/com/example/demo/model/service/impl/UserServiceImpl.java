@@ -1,16 +1,19 @@
 package com.example.demo.model.service.impl;
 
 
-import com.example.demo.model.database.User;
+import com.example.demo.model.database.entity.Role;
+import com.example.demo.model.database.entity.User;
 import com.example.demo.model.database.repository.UserRepository;
 import com.example.demo.model.dto.request.UserRequest;
-import com.example.demo.model.dto.response.exception.NotFoundException;
 import com.example.demo.model.dto.response.entity.UserResponse;
+import com.example.demo.model.dto.response.exception.AlreadyExistsException;
+import com.example.demo.model.dto.response.exception.NotFoundException;
 import com.example.demo.model.mapper.UserMapper;
 import com.example.demo.model.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -45,14 +48,13 @@ public class UserServiceImpl implements UserService {
         return mapper.asResponse(user);
     }
 
-    @Transactional
-    @Modifying
     @Override
-    public UserResponse create(@Valid UserRequest request) {
-        User user = mapper.asEntity(request);
-        user = repository.save(user);
+    public void create(User user) throws AlreadyExistsException {
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new AlreadyExistsException("User with this email already exists.");
+        }
 
-        return mapper.asResponse(user);
+        repository.save(user);
     }
 
     @Transactional
@@ -74,5 +76,15 @@ public class UserServiceImpl implements UserService {
         if (user == null)
             throw new NotFoundException();
         repository.delete(user);
+    }
+
+    @Override
+    public void getAdmin() throws NotFoundException {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = repository.findByEmail(email);
+        if (user == null)
+            throw new NotFoundException();
+        user.setRole(Role.ROLE_ADMIN);
+        repository.save(user);
     }
 }

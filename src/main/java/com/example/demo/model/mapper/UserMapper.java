@@ -1,6 +1,6 @@
 package com.example.demo.model.mapper;
 
-import com.example.demo.model.database.User;
+import com.example.demo.model.database.entity.User;
 import com.example.demo.model.dto.request.UserRequest;
 import com.example.demo.model.dto.response.entity.UserResponse;
 import org.springframework.stereotype.Component;
@@ -11,21 +11,14 @@ import java.util.List;
 @Component
 public class UserMapper {
 
-    public User asEntity(UserRequest request) {
-        return new User(
-                request.firstName(),
-                request.lastName(),
-                request.email()
-        );
-    }
-
     public UserResponse asResponse(User user) {
         return new UserResponse(
                 user.getId(),
                 user.getCreatedAt(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getRole()
         );
     }
 
